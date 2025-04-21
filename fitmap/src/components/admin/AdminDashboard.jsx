@@ -22,7 +22,9 @@ import { useAuth } from '../../hooks/useAuth';
 import { Navigate } from 'react-router-dom';
 import styles from '../../styles/AdminDashboard.module.css';
 
-function AdminDashboard() {
+
+
+function AdminDashboard() {}
   const { user, userProfile, loading } = useAuth();
   const [facilities, setFacilities] = useState([]);
   const [users, setUsers] = useState([]);
