@@ -12,6 +12,8 @@ import {
   FaMapMarkerAlt,
 } from "react-icons/fa";
 
+
+
 function Favorites() {
   // משתמשים ב- userProfile במקום user כדי להתאים ל-Supabase
   const { userProfile } = useAuth();
