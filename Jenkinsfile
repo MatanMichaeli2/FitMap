@@ -14,26 +14,26 @@ pipeline {
 
         stage('Setup Node.js') {
             steps {
-                sh "nvm install ${NODE_VERSION}"
-                sh "nvm use ${NODE_VERSION}"
+                bat 'nvm install %NODE_VERSION%'
+                bat 'nvm use %NODE_VERSION%'
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
+                bat 'npm install'
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh 'npm test'
+                bat 'npm test'
             }
         }
 
         stage('Build') {
             steps {
-                sh 'npm run build'
+                bat 'npm run build'
             }
         }
     }
@@ -49,4 +49,4 @@ pipeline {
             echo 'Pipeline failed!'
         }
     }
-}
+} 
