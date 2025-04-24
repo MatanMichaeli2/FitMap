@@ -34,14 +34,6 @@ pipeline {
                 }
             }
         }
-
-        stage('Build') {
-            steps {
-                dir('fitmap') {
-                    bat 'npm run build -- --verbose'
-                }
-            }
-        }
     }
 
     post {
@@ -53,10 +45,6 @@ pipeline {
         }
         failure {
             echo 'Pipeline failed!'
-            echo 'Build error details:'
-            dir('fitmap') {
-                bat 'type build\\logs\\error.log 2>nul || echo No error log found'
-            }
         }
     }
 } 
