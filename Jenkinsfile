@@ -37,7 +37,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                dir('fitmap') {
+                dir('.') {
                     bat 'docker build -t fitmap-app --no-cache .'
                 }
             }
@@ -45,7 +45,7 @@ pipeline {
 
         stage('Run Docker Container') {
             steps {
-                dir('fitmap') {
+                dir('.') {
                     bat 'docker-compose up -d'
                     bat 'timeout /t 10'
                     bat 'docker-compose ps'
@@ -57,7 +57,7 @@ pipeline {
     post {
         always {
             cleanWs()
-            dir('fitmap') {
+            dir('.') {
                 bat 'docker-compose down'
             }
         }
@@ -66,7 +66,7 @@ pipeline {
         }
         failure {
             echo 'Pipeline failed!'
-            dir('fitmap') {
+            dir('.') {
                 bat 'docker-compose logs'
             }
         }
