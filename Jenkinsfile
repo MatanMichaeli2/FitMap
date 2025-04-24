@@ -14,8 +14,8 @@ pipeline {
 
         stage('Setup Node.js') {
             steps {
-                bat 'nvm install %NODE_VERSION%'
-                bat 'nvm use %NODE_VERSION%'
+                bat 'node --version'
+                bat 'npm --version'
             }
         }
 
