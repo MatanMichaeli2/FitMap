@@ -21,19 +21,25 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                bat 'npm install'
+                dir('fitmap') {
+                    bat 'npm install'
+                }
             }
         }
 
         stage('Run Tests') {
             steps {
-                bat 'npm test'
+                dir('fitmap') {
+                    bat 'npm test'
+                }
             }
         }
 
         stage('Build') {
             steps {
-                bat 'npm run build'
+                dir('fitmap') {
+                    bat 'npm run build'
+                }
             }
         }
     }
