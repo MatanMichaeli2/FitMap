@@ -21,6 +21,7 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
+                // inside your React app folder
                 dir('fitmap') {
                     bat 'npm install'
                 }
@@ -37,38 +38,34 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                dir('fitmap') {
-                    bat 'docker build -t fitmap-app --no-cache .'
-                }
+                // run from workspace root so Dockerfile is found
+                bat 'docker build -t fitmap-app --no-cache .'
             }
         }
 
         stage('Run Docker Container') {
             steps {
-               dir('fitmap') {
-                    bat 'docker-compose up -d'
-                    bat 'timeout /t 10'
-                    bat 'docker-compose ps'
-                }
+                // run from workspace root so docker-compose.yml is found
+                bat 'docker-compose up -d'
+                // give it a few seconds to start
+                bat 'timeout /t 10'
+                bat 'docker-compose ps'
             }
         }
     }
 
     post {
         always {
+            // clean workspace and tear down any containers
             cleanWs()
-            dir('fitmap') {
-                bat 'docker-compose down'
-            }
+            bat 'docker-compose down'
         }
         success {
             echo 'Pipeline completed successfully!'
         }
         failure {
             echo 'Pipeline failed!'
-            dir('fitmap') {
-                bat 'docker-compose logs'
-            }
+            bat 'docker-compose logs'
         }
     }
-} 
+}
