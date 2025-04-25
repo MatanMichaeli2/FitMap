@@ -21,7 +21,6 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                // inside your React app folder
                 dir('fitmap') {
                     bat 'npm install'
                 }
@@ -38,34 +37,42 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                // run from workspace root so Dockerfile is found
-                bat 'docker build -t fitmap-app --no-cache .'
+                dir('fitmap') {
+                    // We're in fitmap/, so package.json is present
+                    // -f ../Dockerfile points at the real Dockerfile one level up
+                    bat 'docker build -t fitmap-app --no-cache -f ../Dockerfile .'
+                }
             }
         }
 
         stage('Run Docker Container') {
             steps {
-                // run from workspace root so docker-compose.yml is found
-                bat 'docker-compose up -d'
-                // give it a few seconds to start
-                bat 'timeout /t 10'
-                bat 'docker-compose ps'
+                dir('fitmap') {
+                    // Compose file lives one level up
+                    bat 'docker-compose -f ../docker-compose.yml up -d'
+                    bat 'timeout /t 10'
+                    bat 'docker-compose -f ../docker-compose.yml ps'
+                }
             }
         }
     }
 
     post {
         always {
-            // clean workspace and tear down any containers
+            // teardown any running containers and clean workspace
+            dir('fitmap') {
+                bat 'docker-compose -f ../docker-compose.yml down'
+            }
             cleanWs()
-            bat 'docker-compose down'
         }
         success {
             echo 'Pipeline completed successfully!'
         }
         failure {
-            echo 'Pipeline failed!'
-            bat 'docker-compose logs'
+            echo 'Pipeline failed, dumping logs:'
+            dir('fitmap') {
+                bat 'docker-compose -f ../docker-compose.yml logs'
+            }
         }
     }
 }
