@@ -1,0 +1,352 @@
+.reviewForm {
+  padding: 1.75rem;
+  background-color: var(--bg-light-darker);
+  border-radius: var(--radius-lg);
+  margin: 1.5rem 0;
+  box-shadow: var(--shadow);
+  animation: fadeIn 0.4s ease;
+  transition: transform var(--transition), box-shadow var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+/* אפקט סגנון כשנמצאים בפוקוס על הטופס */
+.reviewForm:focus-within {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+}
+
+/* אפקט עיצובי מעניין - קו עליון צבעוני */
+.reviewForm::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(to right, var(--primary), var(--accent), var(--energy));
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.reviewForm:focus-within::before {
+  opacity: 1;
+}
+
+/* שיפור אזור הטקסט */
+.reviewForm textarea {
+  width: 100%;
+  padding: 1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-input);
+  resize: none;
+  height: 120px;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  margin-bottom: 1.25rem;
+  transition: all var(--transition);
+  box-shadow: var(--shadow-inner);
+}
+
+.reviewForm textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.15);
+  height: 150px; /* מרחיב אוטומטית כשמתחילים לכתוב */
+}
+
+/* תוספת כותרת לטופס */
+.formTitle {
+  font-size: 1.2rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.formIcon {
+  color: var(--accent);
+  font-size: 1.25rem;
+}
+
+/* עיצוב כוכבי דירוג משופר */
+.ratingContainer {
+  margin-bottom: 1.25rem;
+}
+
+.ratingLabel {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+}
+
+.starsContainer {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.starWrapper {
+  position: relative;
+  cursor: pointer;
+}
+
+.starWrapper i {
+  font-size: 1.75rem;
+  transition: all var(--transition);
+}
+
+.selectedStar {
+  color: var(--warning);
+  transform: scale(1.1);
+}
+
+.emptyStar {
+  color: var(--gray-300);
+}
+
+/* אפקט ריחוף על כוכבים */
+.starWrapper:hover i {
+  transform: scale(1.2) rotate(5deg);
+}
+
+/* אנימציית פעימה לכוכב נבחר */
+@keyframes starPulse {
+  0% { transform: scale(1.1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1.1); }
+}
+
+.justSelected {
+  animation: starPulse 0.5s ease;
+}
+
+/* תוויות דירוג שמופיעות בעת ריחוף */
+.ratingHint {
+  position: absolute;
+  top: -2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background-color: var(--bg-dark);
+  color: var(--text-light);
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius);
+  font-size: 0.75rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: all var(--transition);
+  white-space: nowrap;
+  z-index: 5;
+}
+
+.ratingHint::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: var(--bg-dark) transparent transparent transparent;
+}
+
+.starWrapper:hover .ratingHint {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* שדה שם משתמש אופציונלי */
+.inputField {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-input);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  margin-bottom: 1.25rem;
+  transition: all var(--transition);
+}
+
+.inputField:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.15);
+}
+
+/* שדה קבצים מצורפים אופציונלי */
+.fileInput {
+  display: none;
+}
+
+.fileInputLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background-color: var(--bg-input);
+  border: 1px dashed var(--border-color);
+  border-radius: var(--radius);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-bottom: 1.25rem;
+  transition: all var(--transition);
+}
+
+.fileInputLabel:hover {
+  background-color: rgba(124, 58, 237, 0.05);
+  border-color: var(--primary-light);
+  color: var(--primary);
+}
+
+.fileIcon {
+  color: var(--primary);
+  font-size: 1.25rem;
+}
+
+/* עיצוב הודעת שגיאה */
+.errorMessage {
+  color: var(--error);
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background-color: rgba(239, 68, 68, 0.1);
+  border-radius: var(--radius);
+  animation: slideInUp 0.3s ease;
+}
+
+.errorIcon {
+  color: var(--error);
+  font-size: 1rem;
+}
+
+/* מיכל כפתורי הפעולה */
+.formButtonContainer {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+/* כפתור שליחה ראשי */
+.primaryButton {
+  flex: 2;
+  background: linear-gradient(to left, var(--accent), var(--primary));
+  color: var(--text-light);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  transition: all var(--transition-bounce);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.primaryButton:hover {
+  background: linear-gradient(to left, var(--accent-dark), var(--primary-dark));
+  box-shadow: var(--shadow-primary);
+  transform: translateY(-2px);
+}
+
+.primaryButton:active {
+  transform: translateY(0);
+}
+
+/* אפקט זוהר על כפתור ראשי */
+.primaryButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+}
+
+.primaryButton:hover::before {
+  transform: translateX(100%);
+}
+
+/* כפתור ביטול משני */
+.secondaryButton {
+  flex: 1;
+  background-color: var(--bg-input);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.secondaryButton:hover {
+  background-color: var(--bg-light-darker);
+  color: var(--primary-dark);
+  box-shadow: var(--shadow);
+  transform: translateY(-2px);
+}
+
+.secondaryButton:active {
+  transform: translateY(0);
+}
+
+/* מצב שליחת טופס */
+.submitting {
+  position: relative;
+  pointer-events: none;
+}
+
+.loadingSpinner {
+  display: inline-block;
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s linear infinite;
+}
+
+/* כרטיס הודעת תודה לאחר שליחה */
+.thankYouCard {
+  text-align: center;
+  padding: 2rem;
+  background-color: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  animation: fadeIn 0.5s ease;
+}
+
+.successIcon {
+  font-size: 3rem;
+  color: var(--success);
+  margin-bottom: 1rem;
+  animation: bounce 1s ease;
+}
+
+.thankYouTitle {
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  font-weight: var(--font-weight-bold);
+}
+
+.thankYouText {
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+}
+

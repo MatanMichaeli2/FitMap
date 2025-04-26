@@ -11,6 +11,7 @@ import {
 import Navbar from "./components/shared/Navbar";
 import Footer from "./components/shared/Footer";
 import LoadingSpinner from "./components/shared/LoadingSpinner"; // רכיב חדש לטעינה
+import FitnessMap from "./components/map/FitnessMap";
 
 // דפים
 import RoleSelection from "./components/auth/RoleSelection";
@@ -19,7 +20,6 @@ import PendingApproval from "./components/auth/PendingApproval"; // דף חדש 
 import About from "./components/shared/About";
 import Profile from "./components/user/Profile";
 import Favorites from "./components/user/Favorites";
-import FitnessMap from "./components/map/FitnessMap";
 import AdminDashboard from "./components/admin/AdminDashboard";
 import FacilityDashboard from "./components/facility/FacilityDashboard";
 // הוק אימות
@@ -29,6 +29,8 @@ import PrivacyPolicy from "./components/legal/PrivacyPolicy";
 import TermsOfService from "./components/legal/TermsOfService";
 import CookieConsent from "./components/Cookie/CookieConsent";
 import ContactPage from "./components/Contact/ContactPage";
+
+
 // סגנונות
 import "./App.css";
 

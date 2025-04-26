@@ -1,0 +1,330 @@
+.galleryContainer {
+  position: relative;
+  width: 100%;
+  background-color: var(--bg-light);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: box-shadow var(--transition);
+}
+
+.galleryContainer:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.imageContainer {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+}
+
+/* מראה ההשתקפות של התמונה */
+.imageContainer::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.2), transparent);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.facilityImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.33, 1, 0.68, 1);
+  will-change: transform;
+}
+
+.galleryContainer:hover .facilityImage {
+  transform: scale(1.08);
+}
+
+/* תיאור התמונה אופציונלי */
+.imageCaption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.5rem 1rem 1rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+  color: white;
+  font-size: 0.9rem;
+  transform: translateY(100%);
+  transition: transform var(--transition-bounce);
+  z-index: 2;
+}
+
+.galleryContainer:hover .imageCaption {
+  transform: translateY(0);
+}
+
+/* כפתורי הגלריה משודרגים */
+.galleryButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.4);
+  border: none;
+  color: var(--text-light);
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  z-index: 2;
+  font-size: 1.25rem;
+  border-radius: 50%;
+  transition: all var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+}
+
+.galleryContainer:hover .galleryButton {
+  opacity: 1;
+}
+
+.galleryButton:hover {
+  background: rgba(0, 0, 0, 0.6);
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.galleryButton:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+.galleryButtonRight {
+  right: 0.75rem;
+}
+
+.galleryButtonLeft {
+  left: 0.75rem;
+}
+
+/* אפקט ריפל על הכפתור */
+.galleryButton::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: width 0.5s, height 0.5s, opacity 0.5s;
+}
+
+.galleryButton:active::after {
+  width: 150%;
+  height: 150%;
+  opacity: 1;
+  transition: 0s;
+}
+
+/* ניווט במספר תמונות */
+.imagePagination {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  z-index: 3;
+  padding: 0.5rem 0;
+}
+
+.paginationDot {
+  width: 10px;
+  height: 10px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.paginationDot:hover {
+  background-color: rgba(255, 255, 255, 0.8);
+  transform: scale(1.2);
+}
+
+.activeDot {
+  width: 12px;
+  height: 12px;
+  background-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+}
+
+/* תצוגת מספר התמונות */
+.imageCounter {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  z-index: 2;
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all var(--transition);
+}
+
+.galleryContainer:hover .imageCounter {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* כפתור צפייה במסך מלא */
+.fullscreenButton {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 3;
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all var(--transition);
+}
+
+.galleryContainer:hover .fullscreenButton {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fullscreenButton:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+  transform: scale(1.1);
+}
+
+/* אנימציות מותאמות לתמונות */
+.fadeIn {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+.slideLeft {
+  animation: slideLeft 0.5s ease forwards;
+}
+
+.slideRight {
+  animation: slideRight 0.5s ease forwards;
+}
+
+@keyframes slideLeft {
+  from {
+    opacity: 0;
+    transform: translateX(5%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideRight {
+  from {
+    opacity: 0;
+    transform: translateX(-5%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* מצב טעינה לתמונות */
+.imageLoading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--bg-light-darker);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.imageLoadingSpinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(124, 58, 237, 0.1);
+  border-radius: 50%;
+  border-top-color: var(--primary);
+  animation: spin 1s linear infinite;
+}
+
+/* שיפורי נגישות */
+.galleryButton:focus-visible,
+.paginationDot:focus-visible,
+.fullscreenButton:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  opacity: 1;
+}
+
+/* רספונסיביות מותאמת */
+@media (max-width: 768px) {
+  .imageContainer {
+    height: 250px;
+  }
+  
+  .galleryButton {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .imageContainer {
+    height: 200px;
+  }
+  
+  .galleryButton {
+    opacity: 1;
+    width: 32px;
+    height: 32px;
+  }
+  
+  .imageCounter,
+  .fullscreenButton {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* שיפורים למצב חשוך */
+[data-theme='dark'] .imageContainer::after {
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent);
+}
+
+[data-theme='dark'] .paginationDot {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+[data-theme='dark'] .paginationDot:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+}
