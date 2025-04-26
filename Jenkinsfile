@@ -45,17 +45,21 @@ pipeline {
             }
         }
 
-        stage('Run Docker Container') {
-            steps {
-                dir('fitmap') {
-                    // Compose file lives one level up
-                    bat 'docker-compose -f ../docker-compose.yml up -d'
-                    bat 'timeout /t 10'
-                    bat 'docker-compose -f ../docker-compose.yml ps'
-                }
-            }
-        }
+stage('Run Docker Container') {
+  steps {
+    dir('fitmap') {
+      // bring up the container
+      bat 'docker-compose -f ../docker-compose.yml up -d'
+
+      // wait 10 seconds without needing stdin
+      bat 'powershell -Command "Start-Sleep -Seconds 10"'
+
+      // then list running containers
+      bat 'docker-compose -f ../docker-compose.yml ps'
     }
+  }
+}
+
 
     post {
         always {
