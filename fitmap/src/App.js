@@ -12,7 +12,7 @@ import Navbar from "./components/shared/Navbar";
 import Footer from "./components/shared/Footer";
 import LoadingSpinner from "./components/shared/LoadingSpinner"; // רכיב חדש לטעינה
 import FitnessMap from "./components/map/FitnessMap";
-
+import FacilityDashboard from "./components/facility/FitnessFacilityDashboard"; // דף מפה עם הגנה
 // דפים
 import RoleSelection from "./components/auth/RoleSelection";
 import Auth from "./components/auth/Auth";
@@ -21,14 +21,9 @@ import About from "./components/shared/About";
 import Profile from "./components/user/Profile";
 import Favorites from "./components/user/Favorites";
 import AdminDashboard from "./components/admin/AdminDashboard";
-import FacilityDashboard from "./components/facility/FacilityDashboard";
 // הוק אימות
 import { useAuth } from "./hooks/useAuth";
-import CookiesPolicy from "./components/legal/CookiesPolicy";
-import PrivacyPolicy from "./components/legal/PrivacyPolicy";
-import TermsOfService from "./components/legal/TermsOfService";
-import CookieConsent from "./components/Cookie/CookieConsent";
-import ContactPage from "./components/Contact/ContactPage";
+
 
 
 // סגנונות
@@ -83,7 +78,6 @@ function App() {
       <div className={`app ${theme}`}>
         <Navbar toggleTheme={toggleTheme} theme={theme} />
         <main className="main-content">
-        <CookieConsent />
           <Routes>
             <Route path="/" element={<RoleSelection />} />
             <Route path="/auth" element={<Auth />} />
@@ -136,10 +130,7 @@ function App() {
                 </PrivateRoute>
               }
             />
-            <Route path="/terms" element={<TermsOfService />} />
-            <Route path="/privacy" element={<PrivacyPolicy />} />
-            <Route path="/cookies" element={<CookiesPolicy />} />
-            <Route path="/Contact" element={<ContactPage />} />
+       
 
           </Routes>
         </main>
