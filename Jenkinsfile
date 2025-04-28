@@ -23,6 +23,8 @@ pipeline {
             steps {
                 dir('fitmap') {
                     bat 'npm install'
+                    // התקנה ספציפית של חבילות בדיקה אם חסרות
+                    bat 'npm install --save-dev @testing-library/react @testing-library/user-event jest-junit || echo "Already installed"'
                 }
             }
         }
@@ -30,7 +32,22 @@ pipeline {
         stage('Run Tests') {
             steps {
                 dir('fitmap') {
-                    bat 'npm test -- --passWithNoTests'
+                    // בצע בדיקות עם יצירת דוחות JUnit ודוח כיסוי
+                    bat 'npm test -- --ci --coverage --testResultsProcessor=jest-junit'
+                }
+            }
+            post {
+                always {
+                    // קליטת התוצאות כדוחות
+                    junit 'fitmap/junit.xml'
+                    publishHTML target: [
+                        allowMissing: true,
+                        alwaysLinkToLastBuild: true,
+                        keepAll: true,
+                        reportDir: 'fitmap/coverage/lcov-report',
+                        reportFiles: 'index.html',
+                        reportName: 'דוח כיסוי בדיקות'
+                    ]
                 }
             }
         }
@@ -38,42 +55,44 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 dir('fitmap') {
-                    // We're in fitmap/, so package.json is present
-                    // -f ../Dockerfile points at the real Dockerfile one level up
+                    // בנייה של image דוקר
                     bat 'docker build -t fitmap-app --no-cache -f ../Dockerfile .'
                 }
             }
         }
 
-stage('Run Docker Container') {
-  steps {
-    dir('fitmap') {
-      // bring up the container
-      bat 'docker-compose -f ../docker-compose.yml up -d'
+        stage('Run Docker Container') {
+            steps {
+                dir('fitmap') {
+                    // הרצת הקונטיינר
+                    bat 'docker-compose -f ../docker-compose.yml up -d'
 
-      // wait 10 seconds without needing stdin
-      bat 'powershell -Command "Start-Sleep -Seconds 10"'
+                    // המתנה לעליית הקונטיינר
+                    bat 'powershell -Command "Start-Sleep -Seconds 10"'
 
-      // then list running containers
-      bat 'docker-compose -f ../docker-compose.yml ps'
+                    // הצגת רשימת קונטיינרים פעילים
+                    bat 'docker-compose -f ../docker-compose.yml ps'
+                    
+                    // בדיקה שהאפליקציה עובדת באמצעות curl
+                    bat 'curl -s -o nul -w "%%{http_code}" http://localhost:3000 || echo "Application health check failed"'
+                }
+            }
+        }
     }
-  }
-}
-
 
     post {
         always {
-            // teardown any running containers and clean workspace
+            // סיום הרצת הקונטיינרים וניקוי סביבת העבודה
             dir('fitmap') {
                 bat 'docker-compose -f ../docker-compose.yml down'
             }
             cleanWs()
         }
         success {
-            echo 'Pipeline completed successfully!'
+            echo 'Pipeline הושלם בהצלחה!'
         }
         failure {
-            echo 'Pipeline failed, dumping logs:'
+            echo 'Pipeline נכשל, מציג לוגים:'
             dir('fitmap') {
                 bat 'docker-compose -f ../docker-compose.yml logs'
             }

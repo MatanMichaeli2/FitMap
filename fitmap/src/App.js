@@ -80,7 +80,7 @@ function App() {
     <Router>
       <div className={`app ${theme}`}>
         <Navbar toggleTheme={toggleTheme} theme={theme} />
-        <main className="main-content">
+        <main className="main-content" data-testid="main-content">
         <CookieConsent />
           <Routes>
             <Route path="/" element={<RoleSelection />} />
